@@ -1,44 +1,23 @@
-import { relations, sql } from "drizzle-orm";
+import { min, relations, sql } from "drizzle-orm";
 import {
   index,
   int,
   primaryKey,
+  real,
   sqliteTableCreator,
   text,
 } from "drizzle-orm/sqlite-core";
 import { type AdapterAccount } from "next-auth/adapters";
+import { number } from "zod";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = sqliteTableCreator((name) => `commercia_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
-    createdById: text("createdById", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: int("updatedAt", { mode: "timestamp" }),
-  },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+// Users and Auth
 
 export const users = createTable("user", {
-  id: text("id", { length: 255 }).notNull().primaryKey(),
+  id: text("id", { length: 255 }).notNull().primaryKey().unique(),
   name: text("name", { length: 255 }),
-  email: text("email", { length: 255 }).notNull(),
+  email: text("email", { length: 255 }).notNull().unique(),
   emailVerified: int("emailVerified", {
     mode: "timestamp",
   }).default(sql`CURRENT_TIMESTAMP`),
@@ -108,4 +87,41 @@ export const verificationTokens = createTable(
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
+);
+
+// Products
+
+export const products = createTable(
+  "product",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    name: text("name", { length: 50 }).notNull(),
+    description: text("description", { length: 1000 }),
+    priceUSD: real("price")
+  },
+  product => ({
+    nameIndex: index("name_idx").on(product.name),
+  })
+);
+
+export const productImages = createTable(
+  "product_image",
+  {
+    uuid: text("uuid", { length: 36 }),
+    productId: int("product_id", { mode: "number" }).references(() => products.id)
+  },
+  product_image => ({
+    productIdIndex: index("product_id_idx").on(product_image.productId)
+  })
+);
+
+export const reviews = createTable(
+  "reviews",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    productId: int("product_id", { mode: "number" }).references(() => products.id),
+    userId: text("user_id").references(() => users.id).notNull(),
+    rating: int("rating", { mode: "number" }),
+    text: text("text", { length: 2000 }).notNull()
+  }
 );
