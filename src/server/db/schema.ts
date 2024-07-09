@@ -91,13 +91,23 @@ export const verificationTokens = createTable(
 
 // Products
 
+export const categories = createTable(
+  "category",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }).notNull(),
+    name: text("name", { length: 30 }).notNull(),
+    image: text("image", { length: 100 }).notNull()
+  }
+);
+
 export const products = createTable(
   "product",
   {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }).notNull(),
     name: text("name", { length: 50 }).notNull(),
-    description: text("description", { length: 1000 }),
-    priceUSD: real("price")
+    description: text("description", { length: 1000 }).notNull(),
+    priceUSD: real("price").notNull(),
+    category: int("category", { mode: "number" }).references(() => categories.id).notNull()
   },
   product => ({
     nameIndex: index("name_idx").on(product.name),
@@ -107,8 +117,8 @@ export const products = createTable(
 export const productImages = createTable(
   "product_image",
   {
-    uuid: text("uuid", { length: 36 }),
-    productId: int("product_id", { mode: "number" }).references(() => products.id)
+    uuid: text("uuid", { length: 36 }).notNull(),
+    productId: int("product_id", { mode: "number" }).references(() => products.id).notNull()
   },
   product_image => ({
     productIdIndex: index("product_id_idx").on(product_image.productId)
@@ -118,10 +128,10 @@ export const productImages = createTable(
 export const reviews = createTable(
   "reviews",
   {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    productId: int("product_id", { mode: "number" }).references(() => products.id),
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }).notNull(),
+    productId: int("product_id", { mode: "number" }).references(() => products.id).notNull(),
     userId: text("user_id").references(() => users.id).notNull(),
-    rating: int("rating", { mode: "number" }),
+    rating: int("rating", { mode: "number" }).notNull(),
     text: text("text", { length: 2000 }).notNull()
   }
 );
