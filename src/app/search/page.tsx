@@ -1,9 +1,7 @@
 import notFound from "~/app/not-found";
 
-export default ({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) =>
-{
-    if (searchParams["q"] == undefined)
-    {
+export default ({searchParams}: { searchParams: Record<string, string | string[] | undefined> }) => {
+    if (searchParams["q"] == undefined) {
         return notFound();
     }
 

@@ -1,7 +1,8 @@
-CREATE TABLE `commercia_category` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text(30) NOT NULL,
-	`image` text(100) NOT NULL
+CREATE TABLE `commercia_category`
+(
+    `id`    integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    `name`  text(30) NOT NULL,
+    `image` text(100) NOT NULL
 );
 --> statement-breakpoint
 /*

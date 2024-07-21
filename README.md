@@ -1,29 +1,21 @@
-# Create T3 App
+# Commercia
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a fullstack next app built from the T3 template to demonstrate mastery of next, react, tailwind, basic
+authentication, stripe integration, and more.
+The UI is fully responsive and adjusts to any screen size. This project's UI was heavily inspired by smaller shops such
+as Fangamer and Etsy.
 
-## What's next? How do I make an app with this?
+## Getting Started
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+After running your usual `npm install`, you should run `npm run db:generate` then `npm run db:push`, followed
+by `npm run db:seed` to set up the database and seed it with sample data. After that, `npm run dev` and start browsing.
+A lot of the categories are empty and the product selection is highly limited as the focus of the project was on the
+code and feature set, and not the amount of fake data.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+A very limited scope was taken on in order to focus on more important features and avoid getting caught in the weeds
+of "nice to have" features.
+To that end user accounts are only for those selling products. This demo comes with four accounts as part of the seeded
+data, with each account selling four products.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+The account names are 'Venral', 'Eleth', 'Karim', and 'Bullia'. These accounts all use the same
+password: `ILikeSellingThings`.
