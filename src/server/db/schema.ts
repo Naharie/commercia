@@ -7,13 +7,13 @@ export const createTable = sqliteTableCreator((name) => `commercia_${name}`);
 // Users and Auth
 
 export const users = createTable("user", {
-    id: text("id", {length: 255}).notNull().primaryKey().unique(),
-    name: text("name", {length: 255}),
+    id: text("id", {length: 36}).notNull().primaryKey().unique(),
+    name: text("name", {length: 50}).notNull(),
     email: text("email", {length: 255}).notNull().unique(),
     emailVerified: int("emailVerified", {
         mode: "timestamp",
     }).default(sql`CURRENT_TIMESTAMP`),
-    image: text("image", {length: 255}),
+    image: text("image", {length: 255}).notNull(),
 });
 
 export const usersRelations = relations(users, ({many}) => ({
@@ -98,10 +98,10 @@ export const products = createTable(
         id: int("id", {mode: "number"}).primaryKey({autoIncrement: true}).notNull(),
         name: text("name", {length: 50}).notNull(),
         description: text("description", {length: 500}).notNull(),
-        image: text("image", {length: 100}).notNull(),
+        image: text("image", {length: 255}).notNull(),
         priceUSD: real("price").notNull(),
         category: int("category", {mode: "number"}).references(() => categories.id).notNull(),
-        shop: int("shop", {mode: "number"}).references(() => users.id).notNull()
+        shop: text("shop", {length: 36}).references(() => users.id).notNull()
     },
     product => ({
         nameIndex: index("name_idx").on(product.name),

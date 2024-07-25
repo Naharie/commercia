@@ -1,27 +1,34 @@
 {
-    "version": "6",
-    "dialect": "sqlite",
-    "entries": [
-        {
-            "idx": 0,
-            "version": "6",
-            "when": 1720493436287,
-            "tag": "0000_gorgeous_white_tiger",
-            "breakpoints": true
-        },
-        {
-            "idx": 1,
-            "version": "6",
-            "when": 1720493636647,
-            "tag": "0001_sparkling_cloak",
-            "breakpoints": true
-        },
-        {
-            "idx": 2,
-            "version": "6",
-            "when": 1720493739883,
-            "tag": "0002_omniscient_wild_child",
-            "breakpoints": true
-        }
-    ]
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1720493436287,
+      "tag": "0000_gorgeous_white_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1720493636647,
+      "tag": "0001_sparkling_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1720493739883,
+      "tag": "0002_omniscient_wild_child",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1721874494093,
+      "tag": "0003_lethal_proteus",
+      "breakpoints": true
+    }
+  ]
 }
