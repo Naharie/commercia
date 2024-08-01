@@ -1,17 +1,25 @@
 import {createTRPCRouter, publicProcedure,} from "~/server/api/trpc";
 import {z} from "zod";
-import {eq, inArray} from "drizzle-orm";
+import {count, eq, gt, inArray} from "drizzle-orm";
 import {products, users} from "~/server/db/schema";
 import {randomInInterval} from "~/server/random";
 
 export const shopRouter = createTRPCRouter({
     getFeaturedShops: publicProcedure.query(async ({ctx}) =>
     {
-        const shopIds = await ctx.db.select({ id: users.id }).from(users);
+        const shopIds = await ctx.db
+            .select({ id: users.id })
+            .from(users)
+            .where(gt(ctx.db
+                .select({ count: count(products.id) })
+                .from(products)
+                .where(eq(products.shop, users.id)
+            ), 0)
+        );
         const pickedShops: string[] = [];
         const alreadyPicked = new Set<number>();
         
-        while (pickedShops.length < 4)
+        while (pickedShops.length < 4 && alreadyPicked.size < shopIds.length)
         {
             const picked = randomInInterval(0, shopIds.length - 1);
             const shop = shopIds[picked];
@@ -26,11 +34,7 @@ export const shopRouter = createTRPCRouter({
             limit: 4,
             columns: { id: true, name: true },
             where: inArray(users.id, pickedShops)
-        })).map(user => ({
-            id: user.id,
-            name: user.name,
-            products: []
-        }))    
+        })).sort((a, b) => pickedShops.indexOf(a.id) - pickedShops.indexOf(b.id)) 
     }),
     
     getFeaturedProducts: publicProcedure
@@ -38,7 +42,6 @@ export const shopRouter = createTRPCRouter({
         .query(async ({ input, ctx }) => 
         {
             const productIds = await ctx.db.query.products.findMany({
-                limit: 4,
                 where: eq(products.shop, input),
                 columns: { id: true }
             });
@@ -58,11 +61,11 @@ export const shopRouter = createTRPCRouter({
             
             const featuredProducts: ({ id: number, image: string } | undefined)[] =
                 pickedProducts.length == 0 ? [] :
-                    await ctx.db.query.products.findMany({
+                    (await ctx.db.query.products.findMany({
                         limit: 4,
                         columns: { id: true, image: true },
                         where: inArray(products.id, pickedProducts)
-                    });
+                    })).sort((a, b) => pickedProducts.indexOf(a.id) - pickedProducts.indexOf(b.id));
             
             while (featuredProducts.length < 4)
             {

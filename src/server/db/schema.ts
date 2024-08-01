@@ -13,7 +13,8 @@ export const users = createTable("user", {
     emailVerified: int("emailVerified", {
         mode: "timestamp",
     }).default(sql`CURRENT_TIMESTAMP`),
-    image: text("image", {length: 255}).notNull(),
+    image: text("image", {length: 255}),
+    password: text("password", {length: 60}).notNull()
 });
 
 export const usersRelations = relations(users, ({many}) => ({

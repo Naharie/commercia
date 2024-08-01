@@ -3,6 +3,9 @@ import {type DefaultSession, getServerSession, type NextAuthOptions,} from "next
 import {type Adapter} from "next-auth/adapters";
 import {db} from "~/server/db";
 import {accounts, sessions, users, verificationTokens,} from "~/server/db/schema";
+import CredentialsProvider from "next-auth/providers/credentials";
+import {impossible} from "~/shared/never";
+import {eq} from "drizzle-orm";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,6 +34,27 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+    providers: [
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                email: { label: "Email", type: "text" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials, req) {
+                if (!credentials) return null;
+                
+                const user = (await db
+                    .select()
+                    .from(users)
+                    .where(eq(users.email, credentials.email))
+                    .limit(1)
+                )[0];
+                
+                return user ?? null;
+            }
+        })
+    ],
     callbacks: {
         session: ({session, user}) => ({
             ...session,
@@ -45,8 +69,7 @@ export const authOptions: NextAuthOptions = {
         accountsTable: accounts,
         sessionsTable: sessions,
         verificationTokensTable: verificationTokens,
-    }) as Adapter,
-    providers: [],
+    }) as Adapter
 };
 
 /**
