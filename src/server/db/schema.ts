@@ -1,4 +1,4 @@
-import {relations, sql} from "drizzle-orm";
+import {InferInsertModel, InferSelectModel, relations, sql} from "drizzle-orm";
 import {index, int, primaryKey, real, sqliteTableCreator, text,} from "drizzle-orm/sqlite-core";
 import {type AdapterAccount} from "next-auth/adapters";
 
@@ -107,15 +107,4 @@ export const products = createTable(
     product => ({
         nameIndex: index("name_idx").on(product.name),
     })
-);
-
-export const reviews = createTable(
-    "reviews",
-    {
-        id: int("id", {mode: "number"}).primaryKey({autoIncrement: true}).notNull(),
-        productId: int("product_id", {mode: "number"}).references(() => products.id).notNull(),
-        userId: text("user_id").references(() => users.id).notNull(),
-        rating: int("rating", {mode: "number"}).notNull(),
-        text: text("text", {length: 2000}).notNull()
-    }
 );

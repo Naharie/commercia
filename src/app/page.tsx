@@ -5,11 +5,11 @@ import {FeaturedShop} from "./_components/featured-shop";
 import {api} from "~/trpc/server";
 
 export default async function Home() {
-    const categories = await api.category.getAll();
+    const categories = await api.category.getCategories();
     const featuredShops = await api.shop.getFeaturedShops();
     
     return (
-        <main className="flex flex-col gap-16 items-center m-4">
+        <main className="flex flex-col gap-16 items-center m-4 pb-8">
             <section className="grid grid-cols-5 gap-8 justify-center">
                 {categories.map(category => <ShopCategory key={category.id} category={category}/>)}
             </section>
