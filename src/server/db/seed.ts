@@ -117,7 +117,7 @@ await db.insert(categories).values([
 
 // Products
 
-const jewelry = 1;
+const jewelry = 1; // Example empty category - force this to be handled correctly client side.
 const clothing = 2;
 const interiorDecorations = 3;
 const gardenAndFloral = 4;

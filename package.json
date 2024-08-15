@@ -17,6 +17,8 @@
     "dependencies": {
         "@auth/drizzle-adapter": "^1.1.0",
         "@libsql/client": "^0.6.0",
+        "@stripe/react-stripe-js": "^2.7.3",
+        "@stripe/stripe-js": "^4.2.0",
         "@t3-oss/env-nextjs": "^0.10.1",
         "@tanstack/react-query": "^5.39.0",
         "@trpc/client": "next",
@@ -33,6 +35,7 @@
         "react": "^18.3.0",
         "react-dom": "^18.3.0",
         "server-only": "^0.0.1",
+        "stripe": "^16.7.0",
         "superjson": "^2.2.1",
         "zod": "^3.23.3"
     },

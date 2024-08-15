@@ -8,7 +8,7 @@ export const createTable = sqliteTableCreator((name) => `commercia_${name}`);
 
 export const users = createTable("user", {
     id: text("id", {length: 36}).notNull().primaryKey().unique(),
-    name: text("name", {length: 50}).notNull(),
+    name: text("name", {length: 50}).notNull().unique(),
     email: text("email", {length: 255}).notNull().unique(),
     emailVerified: int("emailVerified", {
         mode: "timestamp",
