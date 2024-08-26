@@ -91,20 +91,4 @@ export const shopRouter = createTRPCRouter({
                 .where(eq(products.shop, input.shopId))
                 .innerJoin(users, eq(users.id, products.shop))
         )
-
-    /*
-    create: protectedProcedure
-      .input(z.object({ name: z.string().min(1) }))
-      .mutation(async ({ ctx, input }) => {
-        // simulate a slow db call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-  
-        
-        await ctx.db.insert(posts).values({
-          name: input.name,
-          createdById: ctx.session.user.id,
-        });
-        
-      })
-      */
 });

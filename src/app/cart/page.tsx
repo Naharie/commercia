@@ -2,11 +2,11 @@
 
 import {useCart} from "~/app/_hooks/useCart";
 import {api} from "~/trpc/react";
-import React, {useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import Link from "next/link";
 import {loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
 import {Elements} from "@stripe/react-stripe-js";
-import {CheckoutForm} from "~/app/_components/checkout-form";
+import {CheckoutForm} from "./_components/checkout-form";
 
 interface Product
 {
@@ -50,17 +50,24 @@ export default () => {
     const stripePromise = useMemo(() => loadStripe(stripePublishableKey), [])
     
     const [cart, setCart] = useCart();
+    
     const productsQuery = api.product.getProducts.useQuery(cart);
     const products = productsQuery.data ?? [];
+    
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     
     const cartTotal = products.map(product => product.price).reduce((a, b) => a + b, 0);
 
     const options: StripeElementsOptions = {
         mode: "payment",
-        amount: cartTotal * 100,
+        amount: cartTotal,
         currency: "usd"
     };
     
+    const checkout = () =>
+    {
+        setCart([]);
+    };
     const removeProduct = (index: number) => () =>
     {
         const newCart = cart.filter((_, cartIndex) => cartIndex !== index);
@@ -70,8 +77,10 @@ export default () => {
     return (
         <div className="flex flex-row justify-center w-full">
             {
+                showSuccessMessage ?
+                    <div className="text-3xl bg-green-400 p-2 rounded-md">Checkout complete, your items are on the way!</div> :
                 cart.length === 0 ?
-                    <div className="text-3xl">You have no items in your cart.</div> :
+                    <div className="text-3xl bg-blue-400 p-2 rounded-md">You have no items in your cart.</div> :
 
                     <div className="grid grid-cols-2 gap-8 w-[50%]">
                         <div className="flex flex-col text-lg gap-4">
@@ -83,7 +92,7 @@ export default () => {
                             {
                                 cartTotal > 0 &&
                                 <Elements stripe={stripePromise} options={options}>
-                                    <CheckoutForm amount={cartTotal * 100} />
+                                    <CheckoutForm onCheckout={checkout} />
                                 </Elements>
                             }
                         </div>

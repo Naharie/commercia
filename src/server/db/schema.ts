@@ -100,11 +100,35 @@ export const products = createTable(
         name: text("name", {length: 50}).notNull(),
         description: text("description", {length: 500}).notNull(),
         image: text("image", {length: 255}).notNull(),
-        priceUSD: real("price").notNull(),
+        priceUSD: int("price").notNull(),
         category: int("category", {mode: "number"}).references(() => categories.id).notNull(),
         shop: text("shop", {length: 36}).references(() => users.id).notNull()
     },
     product => ({
         nameIndex: index("name_idx").on(product.name),
     })
+);
+
+export const orders = createTable(
+    "orders",
+    {
+        id: int("id", {mode: "number"}).primaryKey({autoIncrement: true}).notNull(),
+        
+        name: text("name", { length: 50 }).notNull(),
+
+        address_line_1: text("addressLine1", { length: 256 }).notNull(),
+        address_line_2: text("addressLine2", { length: 256 }).notNull(),
+        city: text("city", { length: 100 }).notNull(),
+        state: text("state", { length: 100 }).notNull(),
+        postalCode: int("postalCode", {mode: "number"}).notNull(),
+        country: text("country", { length: 30 }).notNull()
+    }
+);
+export const orderedProducts = createTable(
+    "orderedProducts",
+    {
+        id: int("id", {mode: "number"}).primaryKey({autoIncrement: true}).notNull(),
+        order: int("order", {mode: "number"}).references(() => orders.id).notNull(),
+        product: int("product", {mode: "number"}).references(() => products.id).notNull()
+    }
 );

@@ -128,6 +128,9 @@ const booksMoviesAndMusic = 8;
 const accessories = 9;
 const toysAndGames = 10;
 
+// All prices are in USD cents, so 2500 is $25.00 and 2575 is $25.75
+// Prices are stored this way to avoid floating point rounding errors when doing math on the prices.
+
 // Venral
 
 await db.insert(products).values({
@@ -135,7 +138,7 @@ await db.insert(products).values({
     description: "Vintage style postcard made from a collage of old timey photos and pressed flowers. The photos used are a combination of free for use content found online and ones personally taken by the artists.",
     image: "https://images.unsplash.com/photo-1719938571129-473874150f78?w=200&h=200&fit=crop",
     category: artsAndCrafts,
-    priceUSD: 25,
+    priceUSD: 2500,
     shop: venralId
 });
 await db.insert(products).values({
@@ -143,7 +146,7 @@ await db.insert(products).values({
    description: "Handmade and decorated gratitude journal. Each journal has its own unique style; some journals may be space themed, others ocean themed, still others fantasy, and much more.",
    image: "https://images.unsplash.com/photo-1528938102132-4a9276b8e320?w=200&h=200&fit=crop",
    category: artsAndCrafts,
-   priceUSD: 65,
+   priceUSD: 6500,
    shop: venralId
 });
 await db.insert(products).values({
@@ -151,7 +154,7 @@ await db.insert(products).values({
     description: "Small decorative pot for windowsill plants and succulents. The pots are made from a combination of chiseled natural rock and artificial accentation and detail.",
     image: "https://images.unsplash.com/photo-1505423070828-64bf1f80c053?w=200&h=200&fit=crop",
     category: gardenAndFloral,
-    priceUSD: 15,
+    priceUSD: 1500,
     shop: venralId
 });
 await db.insert(products).values({
@@ -159,7 +162,7 @@ await db.insert(products).values({
     description: "Extremely stylish black leather travel bag. Perfect for electronic equipment such as cameras, laptops, phones, and more.",
     image: "https://plus.unsplash.com/premium_photo-1678739395192-bfdd13322d34?w=200&h=200&fit=crop",
     category: bagsAndBackpacks,
-    priceUSD: 95,
+    priceUSD: 9500,
     shop: venralId
 });
 
@@ -170,7 +173,7 @@ await db.insert(products).values({
     description: "Home made vintage style soap. Each package includes a random assortment from the various scents such as lemon, lavender, mint, peppermint, etc.",
     image: "https://images.unsplash.com/photo-1546552768-9e3a94b38a59?w=200&h=200&fit=crop",
     category: bathAndBeauty,
-    priceUSD: 30,
+    priceUSD: 3000,
     shop: telunId
 });
 await db.insert(products).values({
@@ -178,7 +181,7 @@ await db.insert(products).values({
     description: "Simple unscented soap with odor free dyes that don't stick to your skin, giving the soap a nifty color while keeping you clean.",
     image: "https://plus.unsplash.com/premium_photo-1671379506196-e04f6a65772a?w=200&h=200&fit=crop",
     category: bathAndBeauty,
-    priceUSD: 30,
+    priceUSD: 3000,
     shop: telunId
 });
 await db.insert(products).values({
@@ -186,7 +189,7 @@ await db.insert(products).values({
     description: "Hand made sock puppet monkey for use as a toy for children or as a decorative with charm to go on a shelf.",
     image: "https://images.unsplash.com/photo-1517686748843-bb360cfc62b3?w=200&h=200&fit=crop",
     category: toysAndGames,
-    priceUSD: 15,
+    priceUSD: 1500,
     shop: telunId
 });
 await db.insert(products).values({
@@ -194,7 +197,7 @@ await db.insert(products).values({
     description: "Stylish leather purse with a soft coating on the inside. Handmade with care.",
     image: "https://images.unsplash.com/photo-1484527273420-c598cb0601f8?w=200&h=200&fit=crop",
     category: bagsAndBackpacks,
-    priceUSD: 50,
+    priceUSD: 5000,
     shop: telunId
 });
 
@@ -205,7 +208,7 @@ await db.insert(products).values({
     description: "A small yellow toy taxicab. Hand painted and lightweight due to being made from pure aluminum.",
     image: "https://images.unsplash.com/photo-1456082902841-3335005c3082?w=200&h=200&fit=crop",
     category: toysAndGames,
-    priceUSD: 45,
+    priceUSD: 4500,
     shop: krieId
 });
 await db.insert(products).values({
@@ -213,7 +216,7 @@ await db.insert(products).values({
     description: "Wooden statue carved and painted to look like baby yoda from Star Wars. This shop and this product are not affiliated with Disney or Lucas Films.",
     image: "https://images.unsplash.com/photo-1603621760091-d7b12c66549a?w=200&h=200&fit=crop",
     category: toysAndGames,
-    priceUSD: 40,
+    priceUSD: 4000,
     shop: krieId
 });
 await db.insert(products).values({
@@ -221,7 +224,7 @@ await db.insert(products).values({
     description: "A hand carved wooden top. While the product has no rough edges, the wooden texture is clearly obvious and care should be taken to avoid splinters when using this product.",
     image: "https://images.unsplash.com/photo-1518440067858-55678e303a04?w=200&h=200&fit=crop",
     category: toysAndGames,
-    priceUSD: 25,
+    priceUSD: 2500,
     shop: krieId
 });
 await db.insert(products).values({
@@ -229,7 +232,7 @@ await db.insert(products).values({
     description: "A small clockwork toy robot made from a combination of metal and high quality plastic. Wind it up to watch it walk.",
     image: "https://images.unsplash.com/photo-1546776230-bb86256870ce?w=200&h=200&fit=crop",
     category: toysAndGames,
-    priceUSD: 35,
+    priceUSD: 3500,
     shop: krieId
 });
 
@@ -240,7 +243,7 @@ await db.insert(products).values({
     description: "Cassette tape with hours of new compositions in the style of classical music.",
     image: "https://plus.unsplash.com/premium_photo-1668418188928-eb7d85411c01?w=200&h=200&fit=crop",
     category: booksMoviesAndMusic,
-    priceUSD: 30,
+    priceUSD: 3000,
     shop: memerId
 });
 await db.insert(products).values({
@@ -248,7 +251,7 @@ await db.insert(products).values({
     description: "UV blocking black tinted sunglasses. Custom molded and cast from high quality plastic.",
     image: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop",
     category: accessories,
-    priceUSD: 15,
+    priceUSD: 1500,
     shop: memerId
 });
 await db.insert(products).values({
@@ -256,7 +259,7 @@ await db.insert(products).values({
     description: "A tie made from soft fabric with a watermelon pattern printed on it.",
     image: "https://plus.unsplash.com/premium_photo-1673814842470-05afedfe6f5b?w=200&h=200&fit=crop",
     category: clothing,
-    priceUSD: 25,
+    priceUSD: 2500,
     shop: memerId
 });
 await db.insert(products).values({
@@ -264,7 +267,7 @@ await db.insert(products).values({
     description: "A wall mounted lamp which appears to be a hand emerging from a portal to grab the lamp.",
     image: "https://plus.unsplash.com/premium_photo-1668005190411-1042cd38522e?w=200&h=200&fit=crop",
     category: interiorDecorations,
-    priceUSD: 75,
+    priceUSD: 7500,
     shop: memerId
 });
 
