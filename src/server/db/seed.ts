@@ -1,4 +1,4 @@
-import {accounts, categories, products, sessions, users, verificationTokens} from "./schema";
+import {accounts, categories, orderedProducts, orders, products, sessions, users, verificationTokens} from "./schema";
 import {db} from "./";
 import {sql} from "drizzle-orm";
 
@@ -11,6 +11,9 @@ await db.delete(verificationTokens);
 await db.delete(sessions);
 await db.delete(accounts);
 await db.delete(users);
+
+await db.delete(orderedProducts);
+await db.delete(orders);
 
 // Reset the auto increments
 // noinspection SqlWithoutWhere
@@ -270,5 +273,22 @@ await db.insert(products).values({
     priceUSD: 7500,
     shop: memerId
 });
+
+// Example Order
+
+await db.insert(orders).values({
+    name: "John Doe",
+    address_line_1: "714 Roseway Drive",
+    address_line_2: "",
+    city: "Hillador",
+    state: "Utah",
+    postalCode: "97131",
+    country: "United States"
+});
+
+await db.insert(orderedProducts).values([
+    { order: 1, product: 1 },
+    { order: 1, product: 2 }
+]);
 
 console.log("Seed done");

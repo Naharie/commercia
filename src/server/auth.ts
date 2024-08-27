@@ -4,8 +4,8 @@ import {type Adapter} from "next-auth/adapters";
 import {db} from "~/server/db";
 import {accounts, sessions, users, verificationTokens,} from "~/server/db/schema";
 import CredentialsProvider from "next-auth/providers/credentials";
-import {impossible} from "~/shared/never";
 import {eq} from "drizzle-orm";
+import bcrypt from "bcrypt";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -17,15 +17,8 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
             id: string;
-            // ...other properties
-            // role: UserRole;
         } & DefaultSession["user"];
     }
-
-    // interface User {
-    //   // ...other properties
-    //   // role: UserRole;
-    // }
 }
 
 /**
@@ -34,6 +27,9 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+    session: {
+        strategy: "jwt"
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -45,24 +41,37 @@ export const authOptions: NextAuthOptions = {
                 if (!credentials) return null;
                 
                 const user = (await db
-                    .select()
+                    .select({ id: users.id, password: users.password })
                     .from(users)
                     .where(eq(users.email, credentials.email))
                     .limit(1)
                 )[0];
+                if (user == undefined) return null;
                 
-                return user ?? null;
+                if (!(await bcrypt.compare(credentials.password, user.password)))
+                {
+                    return null;
+                }
+                
+                return { id: user.id };
             }
         })
     ],
     callbacks: {
-        session: ({session, user}) => ({
-            ...session,
-            user: {
-                ...session.user,
-                id: user.id,
-            },
-        }),
+        jwt: async ({ token, user }) =>
+        {
+            if (user)
+            {
+                token.id = user.id;
+            }
+            
+            return token;
+        },
+        session: async ({session, token}) =>
+        {
+            session.user.id = token.id as string;
+            return session;
+        },
     },
     adapter: DrizzleAdapter(db, {
         usersTable: users,

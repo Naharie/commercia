@@ -120,7 +120,7 @@ export const orders = createTable(
         address_line_2: text("addressLine2", { length: 256 }).notNull(),
         city: text("city", { length: 100 }).notNull(),
         state: text("state", { length: 100 }).notNull(),
-        postalCode: int("postalCode", {mode: "number"}).notNull(),
+        postalCode: text("postalCode", { length: 30 }).notNull(),
         country: text("country", { length: 30 }).notNull()
     }
 );

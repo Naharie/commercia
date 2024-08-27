@@ -15,7 +15,7 @@ interface FeaturedProductProps
 
 const FeaturedProduct = (props: FeaturedProductProps) => {
     return (
-        <div className="relative rounded-md overflow-clip w-52 h-52">
+        <div className="relative rounded-md overflow-clip w-40 h-40 3xl:w-52 3xl:h-52">
             {props.id ?
                 <Link href={`/product/${props.id}`}>
                     <img className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full h-full" src={props.image ?? ""}></img>

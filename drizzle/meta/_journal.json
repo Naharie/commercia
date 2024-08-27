@@ -36,6 +36,20 @@
       "when": 1722475499328,
       "tag": "0004_sad_epoch",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1724663285121,
+      "tag": "0005_condemned_electro",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1724723379368,
+      "tag": "0006_dark_penance",
+      "breakpoints": true
     }
   ]
 }

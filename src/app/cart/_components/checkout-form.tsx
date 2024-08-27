@@ -78,12 +78,14 @@ export const CheckoutForm = (props: { onCheckout: () => void }) =>
         {
             const { error, paymentIntent } = await stripe.handleNextAction({ clientSecret: paymentResponse.client_secret ?? "this-can't-happen-and-we-should-fail" });
             
-            if (error)
+            if (error || paymentIntent == undefined)
             {
-                setErrorMessage(error.message ?? unknownError);
+                setErrorMessage(error?.message ?? unknownError);
                 setLoading(false);
                 return;
             }
+            
+            await awaitableAPI.checkout.finishOrder.mutate({ id: paymentIntent.id });
         }
 
         setLoading(false);

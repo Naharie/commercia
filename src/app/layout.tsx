@@ -16,12 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
     return (
         <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-        <TRPCReactProvider>
-            <Header/>
-            <div className="h-[calc(100vh-5rem)]">
-                {children}
-            </div>
-        </TRPCReactProvider>
+            <TRPCReactProvider>
+                <Header/>
+                <div className="h-[calc(100vh-5rem)]">
+                    {children}
+                </div>
+            </TRPCReactProvider>
         </body>
         </html>
     );
