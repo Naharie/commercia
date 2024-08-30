@@ -6,13 +6,7 @@ import {TRPCReactProvider} from "~/trpc/react";
 import {Header} from "./_components/header";
 import React from "react";
 
-export const metadata = {
-    title: "Commercia",
-    description: "An e-commerce platform for small shops",
-    icons: [{rel: "icon", url: "/favicon.ico"}],
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
+export default function RootLayout({ children, }: { children: React.ReactNode; }) {
     return (
         <html lang="en" className={`${GeistSans.variable}`}>
         <body>
@@ -25,4 +19,4 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
         </body>
         </html>
     );
-}
+};

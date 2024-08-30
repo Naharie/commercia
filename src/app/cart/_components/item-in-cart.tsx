@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-interface Product
+interface ProductInCart
 {
     id: number;
     name: string;
@@ -12,7 +12,7 @@ interface Product
     shopId: string;
 }
 
-export const ItemInCart = ({ product, removeProduct } : { product: Product, removeProduct: () => void }) =>
+export const ItemInCart = ({ product, removeProduct } : { product: ProductInCart, removeProduct: () => void }) =>
 {
     return (
         <div className="flex flex-row gap-4 text-sm xl:text-md">

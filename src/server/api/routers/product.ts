@@ -33,8 +33,7 @@ export const productRouter = createTRPCRouter({
                     description: products.description,
                     image: products.image,
                     price: products.priceUSD,
-                    shopName: users.name,
-                    shopId: products.shop
+                    shop: users.name
                 })
                 .from(products)
                 .where(inArray(products.id, input))

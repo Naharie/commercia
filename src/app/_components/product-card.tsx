@@ -1,19 +1,10 @@
 import Link from "next/link";
+import {Product} from "~/app/_types/product";
 
-interface Product
-{
-    id: number;
-    name: string;
-    description: string;
-    image: string;
-    price: number;
-    shop: string;
-}
-
-export const ProductCard = ({ product }: { product: Product }) =>
+export const ProductCard = ({ product, editMode }: { product: Product, editMode?: boolean }) =>
 {
     return (
-        <Link href={`/product/${product.id}`}>
+        <Link href={editMode ? `/account/listings/${product.id}` : `/product/${product.id}` }>
             <img className="rounded-md w-40 h-40 3xl:w-52 3xl:h-52" src={product.image}  alt={product.description}/>
             <div className="flex flex-col text-lg">
                 <span>{product.name}</span>

@@ -16,7 +16,7 @@ export const Header = async () => {
                     className={`p-1 sm:p-0 w-full sm:w-[95%] md:w-[calc(100%-5rem)] h-full grid ${
                         session ?
                             "grid-cols-1 sm:grid-cols-[1fr,6fr,1fr,0.5fr,0.5fr] md:grid-cols-[2fr,6fr,1.25fr,0.5fr,0.5fr]" :
-                            "grid-cols-1 sm:grid-cols-[1fr,4fr,0.5fr,0.5fr] md:grid-cols-[2fr,6fr,0.5fr,0.5fr]"
+                            "grid-cols-1 sm:grid-cols-[1fr,4fr,1fr,0.5fr] md:grid-cols-[2fr,6fr,1fr,0.5fr]"
                     } gap-4 justify-center items-center`}
                 >
                     <Link href="/" className="text-green-500 text-3xl font-serif">Commercia</Link>

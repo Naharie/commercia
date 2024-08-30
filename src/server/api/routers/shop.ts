@@ -1,8 +1,10 @@
-import {createTRPCRouter, publicProcedure,} from "~/server/api/trpc";
+import {createTRPCRouter, protectedProcedure, publicProcedure,} from "~/server/api/trpc";
 import {z} from "zod";
-import {count, eq, gt, inArray} from "drizzle-orm";
-import {products, users} from "~/server/db/schema";
+import {count, eq, gt, inArray, sql} from "drizzle-orm";
+import {orderedProducts, orders, products, users} from "~/server/db/schema";
 import {randomInInterval} from "~/server/random";
+import {formatAddress} from "~/server/_utilities/format-address";
+import {Order} from "~/app/_types/order";
 
 export const shopRouter = createTRPCRouter({
     getFeaturedShops: publicProcedure.query(async ({ctx}) =>
@@ -90,5 +92,64 @@ export const shopRouter = createTRPCRouter({
                 .from(products)
                 .where(eq(products.shop, input.shopId))
                 .innerJoin(users, eq(users.id, products.shop))
-        )
+        ),
+
+    getOrders: protectedProcedure
+        .query(async ({ ctx }) =>
+        {
+            const orderIds =
+                (await ctx.db
+                    .selectDistinct({ order: orderedProducts.order })
+                    .from(orderedProducts)
+                    .innerJoin(products, eq(orderedProducts.product, products.id))
+                    .where(eq(products.shop, ctx.session.user.id))
+                ).map(wrapper => wrapper.order);
+            
+            if (orderIds.length === 0) return [];
+            
+            const ourOrders =
+                await ctx.db
+                    .select()
+                    .from(orders)
+                    .where(inArray(orders.id, orderIds));
+            
+            const orderResult: Order[] = [];
+            
+            for (const order of ourOrders)
+            {
+                orderResult.push({
+                    id: order.id,
+                    name: order.name,
+                    address: formatAddress({
+                        line1: order.address_line_1,
+                        line2: order.address_line_2,
+                        city: order.city,
+                        state: order.state,
+                        postal_code: order.postalCode,
+                        country: order.country
+                    }),
+                    products:
+                        (await ctx.db
+                            .select({ id: orderedProducts.product })
+                            .from(orderedProducts)
+                            .where(eq(orderedProducts.order, order.id))
+                        ).map(product => product.id)
+                })
+            }
+            
+            return orderResult;
+        }),
+    
+    markOrderAsShipped: protectedProcedure
+        .input(z.object({ orderId: z.number().int() }))
+        .mutation(async ({ ctx, input }) =>
+        {
+            await ctx.db.delete(orderedProducts).where(eq(orderedProducts.order, input.orderId));
+            const orderIsEmpty = (await ctx.db.get<{ order_exists: boolean }>(
+                sql`select exists${ctx.db.select({ n: sql`1` }).from(orderedProducts).where(eq(orderedProducts.order, input.orderId))} as order_exists`
+            )).order_exists;
+            if (!orderIsEmpty) return;
+            
+            ctx.db.delete(orders).where(eq(orders.id, input.orderId));
+        })
 });

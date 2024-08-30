@@ -1,13 +1,9 @@
 import Link from "next/link";
+import { ShopCategory as ShopCategoryInfo } from "~/app/_types/shop-category";
 
-export interface ShopCategory {
-    id: number;
-    name: string;
-    image: string;
-}
-
-interface ShopCategoryProps {
-    category: ShopCategory;
+interface ShopCategoryProps
+{
+    category: ShopCategoryInfo;
 }
 
 export const ShopCategory = ({category}: ShopCategoryProps) => {

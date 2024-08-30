@@ -130,5 +130,8 @@ export const orderedProducts = createTable(
         id: int("id", {mode: "number"}).primaryKey({autoIncrement: true}).notNull(),
         order: int("order", {mode: "number"}).references(() => orders.id).notNull(),
         product: int("product", {mode: "number"}).references(() => products.id).notNull()
-    }
+    },
+    (orderedProducts) => ({
+        orderIdIndex: index("order_id_index").on(orderedProducts.order),
+    })
 );
