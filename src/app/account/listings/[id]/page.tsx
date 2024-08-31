@@ -19,7 +19,8 @@ export default async function EditListing(props: { params: { id: string } })
             </div>
         );
     }
-    if (product.shop != session.user.id) return redirect("/account");
+    if (product.shopId != session.user.id) return redirect("/account");
 
-    return (<ProductEditor product={product} />);
+    const categories = await api.category.getCategories();
+    return (<ProductEditor product={product} categories={categories} />);
 }

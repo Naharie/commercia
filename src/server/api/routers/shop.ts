@@ -7,6 +7,16 @@ import {formatAddress} from "~/server/_utilities/format-address";
 import {Order} from "~/app/_types/order";
 
 export const shopRouter = createTRPCRouter({
+    getName: publicProcedure
+        .input(z.object({ id: z.string() }))
+        .query(async ({ctx, input}) =>
+            (await ctx.db
+                .select({ name: users.name })
+                .from(users)
+                .where(eq(users.id, input.id))
+            )[0]?.name
+        ),
+    
     getFeaturedShops: publicProcedure.query(async ({ctx}) =>
     {
         const shopIds = await ctx.db
@@ -85,9 +95,11 @@ export const shopRouter = createTRPCRouter({
                     id: products.id,
                     name: products.name,
                     description: products.description,
+                    category: products.category,
                     image: products.image,
                     price: products.priceUSD,
-                    shop: users.name
+                    shop: users.name,
+                    shopId: users.id
                 })
                 .from(products)
                 .where(eq(products.shop, input.shopId))

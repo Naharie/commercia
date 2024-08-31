@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {Product} from "~/app/_types/product";
+import {Product} from "~/shared/_types/product";
 
 export const ProductCard = ({ product, editMode }: { product: Product, editMode?: boolean }) =>
 {
