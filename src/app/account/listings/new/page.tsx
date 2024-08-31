@@ -17,12 +17,12 @@ export default async function NewListing()
         id: -1,
         name: "",
         description: "",
-        category: -1,
+        category: 1,
         shop: userName ?? "Unknown",
         shopId: session.user.id,
         price: 0,
         image: ""
     };
     
-    return (<ProductEditor product={product} categories={categories} />);
+    return (<ProductEditor product={product} categories={categories} newListing />);
 }
